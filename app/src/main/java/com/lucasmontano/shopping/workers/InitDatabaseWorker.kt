@@ -21,17 +21,17 @@ class InitDatabaseWorker(
 
     override suspend fun doWork(): Result = coroutineScope {
         try {
-            val productList: List<ProductEntity> = withContext(Dispatchers.IO) {
+            val productsWrapper: ProductsWrapper = withContext(Dispatchers.IO) {
                 applicationContext.assets.open(DATA_FILENAME).use { inputStream ->
                     JsonReader(inputStream.reader()).use { jsonReader ->
-                        val productType = object : TypeToken<List<ProductEntity>>() {}.type
+                        val productType = object : TypeToken<ProductsWrapper>() {}.type
                         Gson().fromJson(jsonReader, productType)
                     }
                 }
             }
 
             val database = AppDatabase.getInstance(applicationContext)
-            database.productDao().insertAll(productList)
+            database.productDao().insertAll(productsWrapper.products)
 
             Result.success()
         } catch (ex: Exception) {
@@ -39,6 +39,8 @@ class InitDatabaseWorker(
             Result.failure()
         }
     }
+
+    data class ProductsWrapper(val products: List<ProductEntity>)
 
     companion object {
         private val TAG = this::class.simpleName
