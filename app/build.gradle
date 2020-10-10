@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 29
@@ -23,7 +24,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.lucasmontano.shopping.utilities.MainTestRunner"
     }
 
     buildTypes {
@@ -37,6 +38,9 @@ android {
 dependencies {
     def room_version = "2.2.5"
     def work_version = "2.4.0"
+    def assistedInject_version = "0.5.2"
+    def hilt_version = "2.28.3-alpha"
+    def hiltViewModel_version = "1.0.0-alpha02"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
@@ -54,6 +58,14 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    // DI
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedInject_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedInject_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltViewModel_version"
+    kapt "androidx.hilt:hilt-compiler:$hiltViewModel_version"
+
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.13'
@@ -63,4 +75,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 }
