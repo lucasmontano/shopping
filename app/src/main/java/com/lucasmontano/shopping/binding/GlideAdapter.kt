@@ -1,4 +1,4 @@
-package com.lucasmontano.shopping.adapters
+package com.lucasmontano.shopping.binding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

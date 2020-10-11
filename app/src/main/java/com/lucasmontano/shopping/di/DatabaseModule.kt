@@ -18,6 +18,7 @@ package com.lucasmontano.shopping.di
 
 import android.content.Context
 import com.lucasmontano.shopping.data.AppDatabase
+import com.lucasmontano.shopping.data.dao.CartDao
 import com.lucasmontano.shopping.data.dao.ProductDao
 import dagger.Module
 import dagger.Provides
@@ -39,5 +40,10 @@ class DatabaseModule {
     @Provides
     fun provideProductDao(appDatabase: AppDatabase): ProductDao {
         return appDatabase.productDao()
+    }
+
+    @Provides
+    fun provideCartDao(appDatabase: AppDatabase): CartDao {
+        return appDatabase.cartDao()
     }
 }

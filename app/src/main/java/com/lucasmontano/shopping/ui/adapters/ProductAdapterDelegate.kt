@@ -6,14 +6,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lucasmontano.shopping.R
-import com.lucasmontano.shopping.adapters.AdapterDelegate
 import com.lucasmontano.shopping.databinding.ItemBasicProductBinding
 import com.lucasmontano.shopping.ui.models.BasicProductUiModel
 import com.lucasmontano.shopping.ui.models.ProductUiModel
 
 internal class ProductAdapterDelegate(
     private val viewLifecycleOwner: LifecycleOwner,
-    val addToCartListener: (value: String?) -> Unit
+    val addToCartListener: (value: String) -> Unit
 ) : AdapterDelegate<ProductUiModel>() {
 
     override fun getViewType() = BasicProductUiModel::class.hashCode()
@@ -34,8 +33,20 @@ internal class ProductAdapterDelegate(
 
     inner class ViewHolder(private val binding: ItemBasicProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: BasicProductUiModel) {
-            binding.item = item
+
+        init {
+            binding.setClickListener {
+                binding.item?.let { product ->
+                    addToCartListener.invoke(product.id)
+                }
+            }
+        }
+
+        fun bind(product: BasicProductUiModel) {
+            binding.apply {
+                item = product
+                executePendingBindings()
+            }
         }
     }
 

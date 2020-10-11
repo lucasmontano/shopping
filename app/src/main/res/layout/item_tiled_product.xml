@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="item"
             type="com.lucasmontano.shopping.ui.models.TiledUiModelProduct" />
     </data>
@@ -31,6 +35,14 @@
             android:layout_margin="@dimen/content_margin"
             android:text="@{item.name}"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{clickListener}"
+            android:src="@drawable/ic_cart_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

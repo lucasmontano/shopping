@@ -2,16 +2,18 @@ package com.lucasmontano.shopping.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucasmontano.shopping.R
-import com.lucasmontano.shopping.adapters.DelegationAdapter
 import com.lucasmontano.shopping.databinding.FragmentProductListBinding
+import com.lucasmontano.shopping.ui.adapters.DelegationAdapter
 import com.lucasmontano.shopping.ui.adapters.ProductAdapterDelegate
 import com.lucasmontano.shopping.ui.adapters.TileProductAdapterDelegate
 import com.lucasmontano.shopping.ui.models.ProductUiModel
+import com.lucasmontano.shopping.viewmodels.CartViewModel
 import com.lucasmontano.shopping.viewmodels.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProductListFragment : Fragment() {
 
     private val viewModel: ProductListViewModel by viewModels()
+
+    // TODO move this to a new ui component
+    private val cartViewModel: CartViewModel by viewModels()
 
     private lateinit var binding: FragmentProductListBinding
 
@@ -50,18 +55,15 @@ class ProductListFragment : Fragment() {
 
         val delegationAdapter = DelegationAdapter(
             itemsDiff,
-            TileProductAdapterDelegate(viewLifecycleOwner) {
-
-            },
-            ProductAdapterDelegate(viewLifecycleOwner) {
-
-            }
+            TileProductAdapterDelegate(viewLifecycleOwner, addProductToCart()),
+            ProductAdapterDelegate(viewLifecycleOwner, addProductToCart())
         )
         binding.productsRecyclerView.adapter = delegationAdapter
         binding.productsRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        subscribeUi(delegationAdapter)
+        subscribeUiToProducts(delegationAdapter)
+        subscribeUiToCart(binding.cartTotalTextView)
 
         setHasOptionsMenu(true)
         return binding.root
@@ -81,7 +83,19 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun subscribeUi(adapter: DelegationAdapter<ProductUiModel>) {
+    private fun addProductToCart(): (value: String) -> Unit {
+        return { productId ->
+            cartViewModel.addToCart(productId)
+        }
+    }
+
+    private fun subscribeUiToCart(cartTotalTextView: TextView) {
+        cartViewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            cartTotalTextView.text = uiState.total
+        }
+    }
+
+    private fun subscribeUiToProducts(adapter: DelegationAdapter<ProductUiModel>) {
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             adapter.setData(uiState.products)
         }

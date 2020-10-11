@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.lucasmontano.shopping.data.domain.HasBasicProductAttr
+import com.lucasmontano.shopping.data.repositories.CartRepository
 import com.lucasmontano.shopping.data.repositories.ProductRepository
 import com.lucasmontano.shopping.ui.models.BasicProductUiModel
 import com.lucasmontano.shopping.ui.models.ProductUiModel

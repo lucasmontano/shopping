@@ -14,8 +14,11 @@ data class ProductEntity(
     val productId: String,
     val name: String,
     val type: String,
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val price: Price
 ) {
 
     override fun toString() = name
+
+    data class Price(val value: Double, val currency: String)
 }

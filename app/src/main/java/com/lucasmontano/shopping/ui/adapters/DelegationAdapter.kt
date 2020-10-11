@@ -1,4 +1,4 @@
-package com.lucasmontano.shopping.adapters
+package com.lucasmontano.shopping.ui.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

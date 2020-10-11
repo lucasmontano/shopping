@@ -21,9 +21,29 @@ class ProductDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var dao: ProductDao
 
-    private val productA = ProductEntity("1", "Name A", "Type 1", "URL")
-    private val productB = ProductEntity("2", "Name B", "Type 2", "URL")
-    private val productC = ProductEntity("3", "Name C", "Type 1", "URL")
+    private val productA = ProductEntity(
+        "1",
+        "Name A",
+        "Type 1",
+        "URL",
+        ProductEntity.Price(10.0, "")
+    )
+
+    private val productB = ProductEntity(
+        "2",
+        "Name B",
+        "Type 2",
+        "URL",
+        ProductEntity.Price(10.0, "")
+    )
+
+    private val productC = ProductEntity(
+        "3",
+        "Name C",
+        "Type 1",
+        "URL",
+        ProductEntity.Price(10.0, "")
+    )
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
