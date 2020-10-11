@@ -69,6 +69,8 @@ dependencies {
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.13'
+    testImplementation "io.mockk:mockk:1.10.2"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
     androidTestImplementation "androidx.work:work-testing:$work_version"

@@ -67,6 +67,14 @@ class ProductDaoTest {
     }
 
     @Test
+    fun testGetProductsByType() {
+        val productList = getValue(dao.getAllProductsByType("Type 1"))
+        assertThat(productList.size, equalTo(2))
+        assertThat(productList[0], equalTo(productA))
+        assertThat(productList[1], equalTo(productC))
+    }
+
+    @Test
     fun testGetProduct() {
         assertThat(getValue(dao.getProduct(productA.productId)), equalTo(productA))
     }

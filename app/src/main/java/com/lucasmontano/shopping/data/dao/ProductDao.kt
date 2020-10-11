@@ -13,6 +13,9 @@ interface ProductDao {
     @Query("SELECT * FROM $DATABASE_TABLE_PRODUCTS ORDER BY name")
     fun getAllProducts(): LiveData<List<ProductEntity>>
 
+    @Query("SELECT * FROM $DATABASE_TABLE_PRODUCTS WHERE type = :type ORDER BY name")
+    fun getAllProductsByType(type: String): LiveData<List<ProductEntity>>
+
     @Query("SELECT * FROM $DATABASE_TABLE_PRODUCTS WHERE id = :productId")
     fun getProduct(productId: String): LiveData<ProductEntity>
 
