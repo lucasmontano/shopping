@@ -77,6 +77,10 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltViewModel_version"
     kapt "androidx.hilt:hilt-compiler:$hiltViewModel_version"
 
+    // Others
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.13'

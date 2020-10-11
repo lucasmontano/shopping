@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.lucasmontano.shopping.data.entities.ProductEntity
+import com.lucasmontano.shopping.data.domain.HasBasicProductAttr
 import com.lucasmontano.shopping.data.repositories.ProductRepository
 import com.lucasmontano.shopping.ui.models.BasicProductUiModel
 import com.lucasmontano.shopping.ui.models.ProductUiModel
@@ -43,15 +43,15 @@ class ProductListViewModel @ViewModelInject internal constructor(
 
     fun filterByType(type: String) = filter.postValue(FilterState.Type(type))
 
-    private fun List<ProductEntity>.toUiModel(): List<ProductUiModel> {
+    private fun List<HasBasicProductAttr>.toUiModel(): List<ProductUiModel> {
         return this.mapIndexed { index, productEntity ->
             when (index) {
                 0 -> TiledUiModelProduct(
-                    productEntity.productId,
+                    productEntity.id,
                     productEntity.name,
                     productEntity.imageUrl
                 )
-                else -> BasicProductUiModel(productEntity.productId, productEntity.name)
+                else -> BasicProductUiModel(productEntity.id, productEntity.name)
             }
         }
     }

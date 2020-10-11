@@ -2,7 +2,7 @@ package com.lucasmontano.shopping.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.lucasmontano.shopping.data.entities.ProductEntity
+import com.lucasmontano.shopping.data.domain.*
 import com.lucasmontano.shopping.data.repositories.ProductRepository
 import com.lucasmontano.shopping.getValueUnitTest
 import io.mockk.MockKAnnotations
@@ -24,9 +24,39 @@ class ProductListViewModelTest {
 
     private lateinit var viewModel: ProductListViewModel
 
-    private val productA = ProductEntity("1", "Name A", "chair", "URL")
-    private val productB = ProductEntity("2", "Name B", "couch", "URL")
-    private val productC = ProductEntity("3", "Name C", "chair", "URL")
+    private val productA = ChairDomainModel(
+        ProductDomainModel(
+            id = "1",
+            name = "Name A",
+            price = 10.00,
+            currency = "EUR",
+            color = "blue",
+            imageUrl = ""
+        ),
+        ProductWithMaterial(material = "Wood")
+    )
+    private val productB = CouchDomainModel(
+        ProductDomainModel(
+            id = "2",
+            name = "Name B",
+            price = 10.00,
+            currency = "EUR",
+            color = "blue",
+            imageUrl = ""
+        ),
+        ProductWithSeats(numberOfSeats = 2)
+    )
+    private val productC = ChairDomainModel(
+        ProductDomainModel(
+            id = "3",
+            name = "Name B",
+            price = 10.00,
+            currency = "EUR",
+            color = "blue",
+            imageUrl = ""
+        ),
+        ProductWithMaterial(material = "Wood")
+    )
 
     @Before
     fun setUp() {
