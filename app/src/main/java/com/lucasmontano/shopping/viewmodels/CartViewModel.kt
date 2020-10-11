@@ -26,5 +26,9 @@ class CartViewModel @ViewModelInject internal constructor(
         cartRepository.addProduct(productId)
     }
 
+    fun removeFromCart(productId: String) = viewModelScope.launch {
+        cartRepository.removeProduct(productId)
+    }
+
     data class ViewState(val total: String)
 }

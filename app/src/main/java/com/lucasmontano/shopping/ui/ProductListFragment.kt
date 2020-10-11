@@ -55,8 +55,16 @@ class ProductListFragment : Fragment() {
 
         val delegationAdapter = DelegationAdapter(
             itemsDiff,
-            TileProductAdapterDelegate(viewLifecycleOwner, addProductToCart()),
-            ProductAdapterDelegate(viewLifecycleOwner, addProductToCart())
+            TileProductAdapterDelegate(
+                viewLifecycleOwner,
+                addProductToCart(),
+                removeProductToCart()
+            ),
+            ProductAdapterDelegate(
+                viewLifecycleOwner,
+                addProductToCart(),
+                removeProductToCart()
+            )
         )
         binding.productsRecyclerView.adapter = delegationAdapter
         binding.productsRecyclerView.layoutManager =
@@ -86,6 +94,12 @@ class ProductListFragment : Fragment() {
     private fun addProductToCart(): (value: String) -> Unit {
         return { productId ->
             cartViewModel.addToCart(productId)
+        }
+    }
+
+    private fun removeProductToCart(): (value: String) -> Unit {
+        return { productId ->
+            cartViewModel.removeFromCart(productId)
         }
     }
 

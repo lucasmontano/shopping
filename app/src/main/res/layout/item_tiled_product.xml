@@ -5,7 +5,11 @@
     <data>
 
         <variable
-            name="clickListener"
+            name="addProductListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="removeProductListener"
             type="android.view.View.OnClickListener" />
 
         <variable
@@ -37,12 +41,23 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageButton
+            android:id="@+id/addProductImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{clickListener}"
+            android:onClick="@{addProductListener}"
             android:src="@drawable/ic_cart_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{removeProductListener}"
+            android:src="@drawable/ic_remove_cart_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addProductImageButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

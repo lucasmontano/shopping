@@ -13,6 +13,9 @@ interface CartDao {
     @Query("SELECT * FROM $DATABASE_TABLE_CART")
     fun getProductsShopping(): LiveData<List<ProductShoppingEntity>>
 
+    @Query("SELECT * FROM $DATABASE_TABLE_CART WHERE product_id = :productId LIMIT 1")
+    fun getProductShopping(productId: String): ProductShoppingEntity?
+
     @Query("SELECT EXISTS(SELECT 1 FROM $DATABASE_TABLE_CART WHERE product_id = :productId LIMIT 1)")
     fun isAddedToCart(productId: String): LiveData<Boolean>
 
@@ -25,4 +28,7 @@ interface CartDao {
 
     @Delete
     suspend fun removeProduct(productShoppingEntity: ProductShoppingEntity)
+
+    @Update
+    suspend fun updateProduct(productShoppingEntity: ProductShoppingEntity)
 }

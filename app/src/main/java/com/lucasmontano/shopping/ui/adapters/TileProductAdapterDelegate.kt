@@ -12,7 +12,8 @@ import com.lucasmontano.shopping.ui.models.TiledUiModelProduct
 
 internal class TileProductAdapterDelegate(
     private val viewLifecycleOwner: LifecycleOwner,
-    val addToCartListener: (value: String) -> Unit
+    val addToCartListener: (value: String) -> Unit,
+    val removeFromCartListener: (value: String) -> Unit
 ) : AdapterDelegate<ProductUiModel>() {
 
     override fun getViewType() = TiledUiModelProduct::class.hashCode()
@@ -35,9 +36,14 @@ internal class TileProductAdapterDelegate(
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.setClickListener {
+            binding.setAddProductListener {
                 binding.item?.let { product ->
                     addToCartListener.invoke(product.id)
+                }
+            }
+            binding.setRemoveProductListener {
+                binding.item?.let { product ->
+                    removeFromCartListener.invoke(product.id)
                 }
             }
         }
