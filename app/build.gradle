@@ -24,7 +24,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.lucasmontano.shopping.utilities.MainTestRunner"
+        // TODO change to MainTestRunner when implementing ui tests
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {

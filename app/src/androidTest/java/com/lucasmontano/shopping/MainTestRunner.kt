@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lucasmontano.shopping.utilities
+package com.lucasmontano.shopping
 
 import android.app.Application
 import android.content.Context
