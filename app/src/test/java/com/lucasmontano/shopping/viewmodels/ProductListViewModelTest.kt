@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.lucasmontano.shopping.data.entities.ProductEntity
 import com.lucasmontano.shopping.data.repositories.ProductRepository
-import com.lucasmontano.shopping.data.viewmodels.ProductListViewModel
 import com.lucasmontano.shopping.getValueUnitTest
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -25,9 +24,9 @@ class ProductListViewModelTest {
 
     private lateinit var viewModel: ProductListViewModel
 
-    private val productA = ProductEntity("1", "Name A", "Type 1", "URL")
-    private val productB = ProductEntity("2", "Name B", "Type 2", "URL")
-    private val productC = ProductEntity("3", "Name C", "Type 1", "URL")
+    private val productA = ProductEntity("1", "Name A", "chair", "URL")
+    private val productB = ProductEntity("2", "Name B", "couch", "URL")
+    private val productC = ProductEntity("3", "Name C", "chair", "URL")
 
     @Before
     fun setUp() {
@@ -44,7 +43,7 @@ class ProductListViewModelTest {
         )
 
         every {
-            repository.getAllProducts("Type A")
+            repository.getAllProducts("chair")
         } returns MutableLiveData(
             listOf(
                 productA, productC
@@ -55,21 +54,21 @@ class ProductListViewModelTest {
     @Test
     @Throws(InterruptedException::class)
     fun `when initializing the viewmodel, default products are listed`() {
-        assertTrue(getValueUnitTest(viewModel.products).isNotEmpty())
+        assertTrue(getValueUnitTest(viewModel.uiState).products.isNotEmpty())
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun `when filtering by type, repository returns the right products`() {
-        viewModel.filterByType("Type A")
-        assertTrue(getValueUnitTest(viewModel.products).size == 2)
+        viewModel.filterByType("chair")
+        assertTrue(getValueUnitTest(viewModel.uiState).products.size == 2)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun `when clearing filter, all products are available`() {
-        viewModel.filterByType("Type A")
+        viewModel.filterByType("chair")
         viewModel.clearFilter()
-        assertTrue(getValueUnitTest(viewModel.products).size == 3)
+        assertTrue(getValueUnitTest(viewModel.uiState).products.size == 3)
     }
 }

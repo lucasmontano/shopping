@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Shopping</string>
+    <string name="menu_filter_by_type">Filter by type</string>
 </resources>
