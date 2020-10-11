@@ -2,8 +2,9 @@ package com.lucasmontano.shopping.data.repositories
 
 import androidx.lifecycle.Transformations
 import com.lucasmontano.shopping.data.dao.ProductDao
-import com.lucasmontano.shopping.data.domain.*
+import com.lucasmontano.shopping.data.domain.HasBasicProductAttr
 import com.lucasmontano.shopping.data.entities.ProductEntity
+import com.lucasmontano.shopping.data.mappers.toDomainModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,29 +23,7 @@ class ProductRepository @Inject constructor(private val productDao: ProductDao) 
 
     private fun List<ProductEntity>.mapToDomainModel(): List<HasBasicProductAttr> {
         return this.mapNotNull {
-            val productAttr = ProductDomainModel(
-                id = it.productId,
-                name = it.name,
-                imageUrl = it.imageUrl,
-                price = 0.0,
-                currency = "",
-                color = ""
-            )
-            when (it.type) {
-                "chair" -> {
-                    ChairDomainModel(
-                        productAttr = productAttr,
-                        materialAttr = ProductWithMaterial("")
-                    )
-                }
-                "couch" -> {
-                    CouchDomainModel(
-                        productAttr = productAttr,
-                        seatsAttr = ProductWithSeats(2)
-                    )
-                }
-                else -> null
-            }
+            it.toDomainModel()
         }
     }
 }

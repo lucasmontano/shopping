@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.lucasmontano.shopping.data.AppDatabase
+import com.lucasmontano.shopping.data.dao.CartDao
 import com.lucasmontano.shopping.data.dao.ProductDao
 import com.lucasmontano.shopping.data.entities.ProductEntity
 import com.lucasmontano.shopping.data.repositories.CartRepository
@@ -13,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,7 +23,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class CartRepositoriesTest {
     private lateinit var database: AppDatabase
-    private lateinit var dao: ProductDao
+    private lateinit var productDao: ProductDao
+    private lateinit var dao: CartDao
     private lateinit var repository: CartRepository
 
     private val productA = ProductEntity("1", "Name A", "Type 1", "URL")
@@ -35,8 +38,10 @@ class CartRepositoriesTest {
     fun createDb() = runBlocking {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        dao = database.productDao()
-        dao.insertAll(listOf(productB, productC, productA))
+        productDao = database.productDao()
+        productDao.insertAll(listOf(productB, productC, productA))
+
+        dao = database.cartDao()
         repository = CartRepository(dao)
     }
 
@@ -47,24 +52,17 @@ class CartRepositoriesTest {
 
     @Test
     fun testAddProductToCart() = runBlocking {
-        repository.addProduct(productA)
-        val productList = getValue(dao.getOnCartProducts())
+        repository.addProduct(productA.productId, 1)
+        val productList = getValue(dao.getAllProducts())
         assertThat(productList.size, equalTo(1))
-        assertThat(productList[0], equalTo(productA.copy(isOnCart = true)))
-    }
-
-    @Test
-    fun testRemoveProductFromCart() = runBlocking {
-        repository.addProduct(productA)
-        assertThat(getValue(dao.getOnCartProducts()).size, equalTo(1))
-        repository.removeProduct(productA)
-        assertThat(getValue(dao.getOnCartProducts()).size, equalTo(0))
+        assertThat(productList[0].product, equalTo(productA))
+        assertTrue(getValue(dao.isAddedToCart(productA.productId)))
     }
 
     @Test
     fun testGetAllCartProducts() = runBlocking {
-        repository.addProduct(productA)
-        repository.addProduct(productB)
+        repository.addProduct(productA.productId, 1)
+        repository.addProduct(productB.productId, 1)
         assertThat(getValue(repository.getAllProducts()).size, equalTo(2))
     }
 }

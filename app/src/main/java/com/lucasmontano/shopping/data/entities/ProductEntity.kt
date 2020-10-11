@@ -14,9 +14,7 @@ data class ProductEntity(
     val productId: String,
     val name: String,
     val type: String,
-    val imageUrl: String = "",
-    // TODO create a cart entity so we can resolve conflicts (prices, availability...)
-    val isOnCart: Boolean = false
+    val imageUrl: String = ""
 ) {
 
     override fun toString() = name

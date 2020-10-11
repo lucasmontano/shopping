@@ -8,20 +8,28 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.lucasmontano.shopping.data.dao.CartDao
 import com.lucasmontano.shopping.data.dao.ProductDao
 import com.lucasmontano.shopping.data.entities.ProductEntity
+import com.lucasmontano.shopping.data.entities.ProductShoppingEntity
 import com.lucasmontano.shopping.utilities.DATABASE_NAME
 import com.lucasmontano.shopping.workers.InitDatabaseWorker
 
-@Database(entities = [ProductEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ProductShoppingEntity::class, ProductEntity::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
+    abstract fun cartDao(): CartDao
 
     companion object {
 
-        @Volatile private var instance: AppDatabase? = null
+        @Volatile
+        private var instance: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {

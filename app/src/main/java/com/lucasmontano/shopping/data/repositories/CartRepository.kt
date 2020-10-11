@@ -1,21 +1,25 @@
 package com.lucasmontano.shopping.data.repositories
 
-import com.lucasmontano.shopping.data.dao.ProductDao
-import com.lucasmontano.shopping.data.entities.ProductEntity
-
+import com.lucasmontano.shopping.data.dao.CartDao
+import com.lucasmontano.shopping.data.entities.ProductShoppingEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CartRepository @Inject constructor(private val productDao: ProductDao) {
+class CartRepository @Inject constructor(
+    private val cartDao: CartDao
+) {
 
-    fun getAllProducts() = productDao.getOnCartProducts()
+    suspend fun addProduct(productId: String, quantity: Int = 1) {
+        cartDao.addProduct(ProductShoppingEntity(productId, quantity))
+    }
 
-    suspend fun addProduct(productEntity: ProductEntity) = updateProduct(productEntity, true)
+    suspend fun removeProduct(productShoppingEntity: ProductShoppingEntity) {
+        cartDao.removeProduct(productShoppingEntity)
+    }
 
-    suspend fun removeProduct(productEntity: ProductEntity) = updateProduct(productEntity, false)
+    fun isOnCart(productId: String) =
+        cartDao.isAddedToCart(productId)
 
-    private suspend fun updateProduct(productEntity: ProductEntity, isOnCart: Boolean) =
-        productDao.update(productEntity.copy(isOnCart = isOnCart))
-
+    fun getAllProducts() = cartDao.getAllProducts()
 }
